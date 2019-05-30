@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import AuthPage from './AuthPage/AuthPage'
 import MainContainer from './MainContainer/MainContainer';
+require('dotenv').config()
 
 class App extends Component {
   constructor(){
@@ -16,7 +17,7 @@ class App extends Component {
     //this.checkForUser();
   }
   checkForUser = async () => {
-    const currentUser = await fetch('http://localhost:8080/current', {
+    const currentUser = await fetch(process.env.REACT_APP_BACKEND + '/current', {
       credentials: 'include'
     })
     const parsedResponse = await currentUser.json();
@@ -30,7 +31,7 @@ class App extends Component {
   handleLogin = async (formData) => {
     //console.log(formData);
     try{
-      const loginResponse = await fetch('http://localhost:8080/login', {
+      const loginResponse = await fetch(process.env.REACT_APP_BACKEND + '/login', {
         method: 'POST',
         body: JSON.stringify(formData),
         credentials: 'include',
@@ -52,7 +53,7 @@ class App extends Component {
   }
   handleLogout = async () => {
     console.log("logout hit")
-    const response = await fetch('http://localhost:8080/logout', {
+    const response = await fetch(process.env.REACT_APP_BACKEND + '/logout', {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -66,7 +67,7 @@ class App extends Component {
   }
   handleRegister = async (formData) => {
     console.log(formData);
-    const response = await fetch('http://localhost:8080/users', {
+    const response = await fetch(process.env.REACT_APP_BACKEND +  '/users', {
       method: 'POST',
       body: JSON.stringify(formData),
       credentials: 'include',
@@ -86,7 +87,7 @@ class App extends Component {
   }
   updateUser = async (id, user) => {
     console.log('UPDATE CLICKED')
-    const response = await fetch(`http://localhost:8080/users/${id}`, {
+    const response = await fetch(process.env.REACT_APP_BACKEND + `/users/${id}`, {
         method: 'PUT',
         body: JSON.stringify(user),
         credentials: 'include',
@@ -109,7 +110,7 @@ class App extends Component {
   deleteUser = async (id) => {
     if(this.state.currentUser !== null){
       console.log(`DELETING USER ${this.state.currentUser.username}`)
-      const deletedUser =  await fetch(`http://localhost:8080/users/${this.state.currentUser.id}`, {
+      const deletedUser =  await fetch(process.env.REACT_APP_BACKEND + `/users/${this.state.currentUser.id}`, {
         method: 'DELETE'
       })
       if(deletedUser){
